@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpHeigh = 1f;
     private Vector2 moveInput;
     private Rigidbody2D rb2D;
-    private bool isJumping = true;
+    private bool isJumping = false;
     
 
     private void Awake()
@@ -22,16 +22,16 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         moveInput = PlayerInputAction.Instance.MoveActionPressed();
-        rb2D.linearVelocity = moveInput * playerMovementSpeed * Time.deltaTime;
-    }
+        rb2D.linearVelocity = new Vector2(moveInput.x * playerMovementSpeed, rb2D.linearVelocity.y);
 
-    private void Update()
-    {
         if (PlayerInputAction.Instance.JumpActionPresssed() && isJumping == false)
         {
-            rb2D.AddForce(Vector2.up * jumpHeigh);
+            rb2D.linearVelocityY = jumpHeigh;
         }
+        
     }
+
+    
 
     private void OnCollisionEnter2D(Collision2D other)
     {
