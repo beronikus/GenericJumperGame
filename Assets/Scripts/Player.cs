@@ -60,8 +60,10 @@ public class Player : MonoBehaviour
         {
             rb2D.linearVelocityY = jumpHeigh;
             coyoteTimeDuration = 0;
-
+            
         }
+        
+        
 
        
     }
