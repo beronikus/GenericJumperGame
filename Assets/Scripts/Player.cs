@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Timeline;
 
 public class Player : MonoBehaviour
 {
@@ -79,5 +80,12 @@ public class Player : MonoBehaviour
 
         return raycastDownHit2D.collider != null;
     }
-    
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.TryGetComponent(out Goal goal))
+        {
+            Debug.Log("Reached Goal");
+        } ;
+    }
 }
