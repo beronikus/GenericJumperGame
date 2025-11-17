@@ -6,6 +6,10 @@ public class Player : MonoBehaviour
 {
     public static Player Instance { get; private set; }
 
+    public EventHandler OnReachingGoal;
+    public EventHandler OnDeath;
+    public EventHandler OnJump;
+
     [SerializeField] private float playerMovementSpeed = 1f;
     [SerializeField] private float jumpHeigh = 1f;
     [SerializeField] private float rayOffset = 0.05f;
@@ -59,8 +63,10 @@ public class Player : MonoBehaviour
 
         if (PlayerInputAction.Instance.JumpActionPresssed() && coyoteTimeDuration > 0f)
         {
+            
             rb2D.linearVelocityY = jumpHeigh;
             coyoteTimeDuration = 0;
+            OnJump?.Invoke(this, EventArgs.Empty);
             
         }
         
@@ -86,6 +92,22 @@ public class Player : MonoBehaviour
         if (other.gameObject.TryGetComponent(out Goal goal))
         {
             Debug.Log("Reached Goal");
+            OnReachingGoal?.Invoke(this, EventArgs.Empty);
+            
         } ;
     }
+
+  
+   
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.TryGetComponent(out Hazards hazard))
+        {
+            Destroy(gameObject);
+            OnDeath?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+
+    
 }
